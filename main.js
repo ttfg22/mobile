@@ -8,9 +8,7 @@ let stephansdom = {
 };
 
 // Karte initialisieren
-let map = L.map("map").setView([
-    stephansdom.lat, stephansdom.lng
-], 12);
+var map = L.map('map',{fullscreenControl:true}).setView([stephansdom.lat,stephansdom.lng],15)
 
 // Hintergrundlayer
 let layerControl = L.control.layers({
@@ -32,3 +30,24 @@ L.marker([
 L.control.scale({
     imperial: false,
 }).addTo(map);
+
+//Lokalisierungsservice
+map.locate({setView: true, maxZoom: 16});
+
+// Marker erstellen 
+function onLocationFound(evt) {
+    var radius = evt.accuracy;
+
+    L.marker(evt.latlng).addTo(map)
+        .bindPopup("You are within " + radius + " meters from this point").openPopup();
+
+    L.circle(evt.latlng, radius).addTo(map);
+}
+
+// Fehlermeldung
+function onLocationError(evt) {
+    alert(evt.message);
+}
+
+map.on('locationerror', onLocationError);
+map.on('locationfound', onLocationFound);
