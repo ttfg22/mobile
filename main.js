@@ -36,10 +36,9 @@ map.locate({setView: true, maxZoom: 16});
 
 // Marker erstellen 
 function onLocationFound(evt) {
-    var radius = evt.accuracy;
-
+    let radius = Math.round(evt.accuracy)
     L.marker(evt.latlng).addTo(map)
-        .bindPopup("You are within " + radius + " meters from this point").openPopup();
+        .bindPopup(`You are within ${radius} meters from this point`).openPopup();
 
     L.circle(evt.latlng, radius).addTo(map);
 }
