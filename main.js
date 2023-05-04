@@ -33,20 +33,14 @@ L.control.scale({
 
 //Lokalisierungsservice
 map.locate({setView: true, maxZoom: 16});
-
-// Marker erstellen 
-function onLocationFound(evt) {
+//FUnktionen für Events Lokalisierung gefunden oder Error message
+map.on('locationerror', function onLocationError(evt) {
+    alert(evt.message);
+});
+map.on('locationfound', function onLocationFound(evt) {
     let radius = Math.round(evt.accuracy)
     L.marker(evt.latlng).addTo(map)
         .bindPopup(`You are within ${radius} meters from this point`).openPopup();
 
     L.circle(evt.latlng, radius).addTo(map);
-}
-
-// Fehlermeldung
-function onLocationError(evt) {
-    alert(evt.message);
-}
-
-map.on('locationerror', onLocationError);
-map.on('locationfound', onLocationFound);
+});
